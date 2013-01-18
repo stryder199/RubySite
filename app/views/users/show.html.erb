@@ -1,0 +1,43 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= gravatar_for @user, :size => 250 %>
+        <%= @user.name %>
+      </h1>
+      <div class="friends">
+      <h1>Friends</h1>
+        <ul>
+           <%if @user.friendships.empty?%>
+          <p>You have no friends</p>
+          <%else%>
+            <% for friendship in @user.friendships %>
+              <section>
+                <%= gravatar_for friendship.friend, :size => 50 %>
+                <%=h friendship.friend.name %>
+                (<%= link_to "remove", friendship, :method => :delete %>)
+              </section>
+            <% end %>
+          <%end%>
+        </ul>
+      </div>
+      <p><%= link_to "Find Friends", users_path %></p>
+  </section>
+  </aside>
+  <div class="span8">
+    <div class="textbox2line">
+      <h3>Post to my wall:</h3>
+      <section>
+        <%= render 'shared/micropost_form' %>
+      </section>    
+    </div>
+    <% if @user.microposts.any? %>
+      <h3>My Feed (<%= @user.microposts.count %>)</h3>
+      <ol class="microposts">
+        <%= render @microposts %>
+      </ol>
+      <%= will_paginate @microposts %>
+    <% end %>
+  </div>
+</div>
